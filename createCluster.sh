@@ -33,6 +33,8 @@ do
     echo "${masterIP}  master.k.net    master" | sudo tee -a /etc/hosts
     echo "${node1IP}  node1.k.net    node1" | sudo tee -a /etc/hosts
     echo "${node2IP}  node2.k.net    node2" | sudo tee -a /etc/hosts
+    sudo mkdir -p /run/flannel
+    sudo touch /run/flannel/subnet.env
     echo "FLANNEL_NETWORK=10.96.0.0/12" | sudo tee -a /run/flannel/subnet.env
     echo "FLANNEL_SUBNET=10.96.0.1/24" | sudo tee -a /run/flannel/subnet.env
     echo "FLANNEL_MTU=1450" | sudo tee -a /run/flannel/subnet.env
@@ -90,10 +92,6 @@ EOF
 EOF
 
  multipass exec master -- bash <<EOF
-    kubectl apply -f kube-flannel.yml
+    kubectl apply -f https://raw.githubusercontent.com/ranjanmanishr/multipass-k8s-flannel/main/kube-flannel.yml
 EOF
-
-
-
-
     
